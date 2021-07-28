@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<style>
+        .errorlist li {
+        color:red;
+        }
+ </style>
+    <div class="wrapper fadeInDown">
+      <div id="formContent">
+        <!-- Tabs Titles -->
+        <h2 class="active"> Sign In </h2>
+        <h2 class="inactive">Sign Up </h2>
+
+        <!-- Icon -->
+        <div class="fadeIn first">
+<!--          <img src="{% static 'images/default_user.png' %}"> id="icon" alt="User Icon" />-->
+        </div>
+
+        <!-- Login Form -->
+        <form action="." method="POST">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+
+
+          <input type="text" id="username" class="fadeIn second" name="username" placeholder="username" {%if form.username.value != None %} value="{{form.username.value}}" {%endif%}>
+            {% if form.username.errors %}
+                        <div> {{ form.username.errors }} </div>
+                      {% endif %}
+          <input type="text" id="password" class="fadeIn third" name="password" placeholder="password" {%if form.password.value != None %} value="{{form.password.value}}" {%endif%}>
+            {% if form.password.errors %}
+                        <div> {{ form.password.errors }} </div>
+                      {% endif %}
+          <input type="submit" class="fadeIn fourth" value="Log In">
+
+            {% if next %}
+            <input type="hidden" name="next" value="{{ next }}" />
+            {% endif %}
+        </form>
+
+        <!-- Remind Passowrd -->
+        <div id="formFooter">
+          <a class="inactive">Forgot Password?</a>
+        </div>
+
+      </div>
+    </div>
+{% endblock %}
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Title</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--    -->
+<!--</body>-->
+<!--</html>-->

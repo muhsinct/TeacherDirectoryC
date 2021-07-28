@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <style>
+        .errorlist li {
+        color:red;
+        }
+    </style>
+
+    <div style="display: block; height: 15%; color:'red'"></div>
+    <div style="display: block; margin-left: 30%; margin-right:30%">
+    <div id="col-md-3">
+        <h2 class="active">   Please upload teachers profile details and images below </h2> </br>
+        <hr class="my-4">
+        <form action="{% url 'importer' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="csv" name="csv_file" required="True">
+                    <label class="custom-file-label" for="csv">Choose file contains teacher profile details (.csv)</label>
+                  </div>
+            </div>
+            {% if form.csv_file.errors %}
+                        <div class="mb-3"> {{ form.csv_file.errors }} </div>
+                      {% endif %}
+            <div class="input-group mb-3">
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="zip" name="zip_file" required="True">
+                    <label class="custom-file-label" for="zip">Choose file contains teacher profile pictures (.zip)</label>
+                  </div>
+
+            </div>
+            {% if form.zip_file.errors %}
+                        <div  class="mb-3"> {{ form.zip_file.errors }} </div>
+                      {% endif %}
+            <input type="submit" class="fadeIn fourth" value="Upload">
+        </form>
+    </div>
+
+{% endblock %}

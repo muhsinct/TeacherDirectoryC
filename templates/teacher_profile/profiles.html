@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="d-flex">
+    <div class="mt-2"></div>
+    <div class="col-sm-6 mt-4">
+        <h1>Profiles</h1>
+    </div>
+    <form action="{% url 'profiles' %}" method="GET">
+        {% csrf_token %}
+        <div class="row mt-4">
+            <div class="col-sm-4">
+              <input type="text" placeholder="Last name" name="lastname" value="{{lastname}}" class="form-control searchbox-input">
+            </div>
+
+            <div class="col-sm-4">
+              <input type="text" placeholder="Subject" name="subject" value="{{subject}}" class="form-control searchbox-input">
+            </div>
+
+            <div class="col-sm-4">
+              <input type="submit" class="btn btn-info" value="Filter">
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="row carditem">
+    {% for profile in profiles %}
+        <input type="hidden" name="profile_filter" value="filter_val" />
+        <div class="col-md-3">
+            <div class="card mb-5">
+                <img class="card-img-top img-thumbnail" src="/media/{{ profile.image_name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ profile.first_name }} {{ profile.last_name }}</h5>
+                    <p class="card-text">{{ profile.email }}</p>
+                    <a href="{% url 'profile_details' profile.pk %}"
+                       class="btn btn-primary">
+                        View Full Profile
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
+
+
