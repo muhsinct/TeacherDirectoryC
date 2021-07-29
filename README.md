@@ -15,6 +15,7 @@
 		
 		python manage.py runserver
 		open the url in browser by appending /login at the end of the url
+		use the credentials (usesrname=test_1, password=pass.123) to login
 		
 4) Use Teachers.csv and teachers.zip for bulk upload. For any other csv files, follow the same format of the given Teachers.csv file.
 		
