@@ -25,6 +25,7 @@ class ProfilesView(View):
             all_profiles = all_profiles.filter(last_name__istartswith=lastname)
         if subject:
             all_profiles = all_profiles.filter(subjects__subject_name__istartswith=subject)
+        # all_profiles = all_profiles.filter(last_name__istartswith=lastname).filter(subjects__subject_name__istartswith=subject)
 
         context = {
             'profiles': all_profiles,
@@ -64,10 +65,7 @@ class ImporterView(View):
             teacher_details = teacher_details.dropna(subset=['First Name', 'Email Address'], how='any')
             removed_rows = n_rows - len(teacher_details)
 
-            with open(settings.IMAGE_ROOT.joinpath('images.zip'), 'wb+') as destination:
-                for chunk in images_zip_file.chunks():
-                    destination.write(chunk)
-            images_zip_file = zipfile.ZipFile(settings.IMAGE_ROOT.joinpath('images.zip'), 'r')
+            images_zip_file = zipfile.ZipFile(images_zip_file, 'r')
             image_name_list = images_zip_file.namelist()
 
             duplicate_rows = 0
@@ -99,7 +97,6 @@ class ImporterView(View):
                     profile.image_name.save(image_name, img, save=True)
                     image.close()
             images_zip_file.close()
-            os.remove(settings.IMAGE_ROOT.joinpath('images.zip'))
             success_rows = n_rows - removed_rows - duplicate_rows
             if success_rows > 0:
                 messages.success(request, str(success_rows) + ' profiles added successfully.')
