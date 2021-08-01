@@ -1,49 +1,44 @@
 from .models import Profiles, SubjectsMaster
-from django.http import HttpResponseRedirect
-from django.conf import settings
 import zipfile
 from django.core.files import File
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-import os
 import pandas as pd
 from django.contrib import messages
 from django.shortcuts import render
 from django.views import View
+from django.views.generic import ListView, DetailView
 from .forms import ProfileImageUploadForm
 
 
-class ProfilesView(View):
+class ProfilesView(ListView):
     template_name = 'teacher_profile/profiles.html'
+    model = Profiles
+    context_object_name = 'profile_list'
 
-    def get(self, request, *args, **kwargs):
-        lastname = request.GET.get("lastname", "")
-        subject = request.GET.get("subject", "")
-        all_profiles = Profiles.objects.all()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        lastname = self.request.GET.get("lastname", "")
+        subject = self.request.GET.get("subject", "")
+        context['lastname'] = lastname
+        context['subject'] = subject
+        return context
+
+    def get_queryset(self):
+        queryset = self.model.objects.all()
+        lastname = self.request.GET.get("lastname", "")
+        subject = self.request.GET.get("subject", "")
 
         if lastname:
-            all_profiles = all_profiles.filter(last_name__istartswith=lastname)
+            queryset = queryset.filter(last_name__istartswith=lastname)
         if subject:
-            all_profiles = all_profiles.filter(subjects__subject_name__istartswith=subject)
-        # all_profiles = all_profiles.filter(last_name__istartswith=lastname).filter(subjects__subject_name__istartswith=subject)
-
-        context = {
-            'profiles': all_profiles,
-            'lastname': lastname,
-            'subject': subject
-        }
-        return render(request, self.template_name, context)
+            queryset = queryset.filter(subjects__subject_name__istartswith=subject)
+        return queryset
 
 
-class ProfileDetailsView(View):
+class ProfileDetailsView(DetailView):
     template_name = 'teacher_profile/profile_details.html'
-
-    def get(self, request, *args, **kwargs):
-        profile = Profiles.objects.get(pk=kwargs.get('pid'))
-        context = {
-            'profile': profile
-        }
-        return render(request, self.template_name, context)
+    model = Profiles
 
 
 class ImporterView(View):

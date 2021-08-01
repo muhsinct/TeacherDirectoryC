@@ -5,23 +5,23 @@
 
 <div class="row d-flex justify-content-center mt-5">
     <div class="col-md-4">
-        <h1 class="text-center font-weight-bold">{{ profile.first_name }} {{ profile.last_name }}</h1>
-        <img class="img-thumbnail" src="/media/{{ profile.image_name }}" alt="" width="100%">
+        <h1 class="text-center font-weight-bold">{{ object.first_name }} {{ object.last_name }}</h1>
+        <img class="img-thumbnail" src="/media/{{ object.image_name }}" alt="" width="100%">
     </div>
     <div class="col-md-3">
         <br><br><br><br>
         <h5 class="font-weight-bold">Email:</h5>
-        <p>{{ profile.email }}</p>
+        <p>{{ object.email }}</p>
         <br>
         <h5 class="font-weight-bold">Contact Number:</h5>
-        <p>{{ profile.phone_number }}</p>
+        <p>{{ object.phone_number }}</p>
         <br>
         <h5 class="font-weight-bold">Room Number:</h5>
-        <p>{{ profile.room_number }}</p>
+        <p>{{ object.room_number }}</p>
         <br>
         <h5 class="font-weight-bold">Subjects:</h5>
         <ul style="list-style-type:disc"></ul>
-        {% for subject in profile.subjects.all %}
+        {% for subject in object.subjects.all %}
 		    <li>{{subject.subject_name}}</li>
 	    {% endfor %}
         <br>
